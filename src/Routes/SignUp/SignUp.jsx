@@ -1,12 +1,27 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import signUpimg from "../../assets/others/authentication2.png"
 import { loadCaptchaEnginge, LoadCanvasTemplate,validateCaptcha } from 'react-simple-captcha';
 import { useEffect, useState } from "react";
-import Swal from "sweetalert2";
 import toast from "react-hot-toast";
+import { useForm } from "react-hook-form"
+import useAuth from "../../assets/Hooks/UseMenu/useAuth";
 
 const SignUp = () => {
+    const navigate = useNavigate()
+    const location = useLocation()
     const [disabledSignIn,setDisabledSign] = useState(true)
+    const {register,handleSubmit,formState:{errors}} = useForm();
+    const {createUser} = useAuth()
+    const onSubmit = (data)=>{
+        createUser(data.email,data.password)
+        .then(res=>{
+            console.log(res.user)
+            navigate(location.state?location.state:'/')
+        })
+        .catch(error=> console.log(error))
+
+
+    }
     useEffect(()=>{
         loadCaptchaEnginge(6); 
     },[])
@@ -18,7 +33,7 @@ const SignUp = () => {
    
         else {
             setDisabledSign(true)
-            toast.error('Captcha Does Not Match');
+            toast.error('Captcha Does Not Match Try Again');
         }
     }
     return (
@@ -29,7 +44,7 @@ const SignUp = () => {
           </div>
           <div className="w-1/2">
             <div className="card  w-3/4  mx-auto ">
-              <form  className="card-body">
+              <form onSubmit={handleSubmit(onSubmit)}  className="card-body">
                 <div className="form-control">
                   <label className="label">
                     <span className="label-text">Name</span>
@@ -40,6 +55,7 @@ const SignUp = () => {
                     name="name"
                     className="input input-bordered"
                     required
+                    {...register("name")}
                   />
                 </div>
                 <div className="form-control">
@@ -51,8 +67,11 @@ const SignUp = () => {
                     placeholder="email"
                     name="email"
                     className="input input-bordered"
-                    required
+                    
+                    {...register("email",{ required:true })}
+
                   />
+                  {errors.email && <p className="text-red-500 mt-4">Please Type An Email</p>}
                 </div>
                 <div className="form-control">
                   <label className="label">
@@ -63,13 +82,18 @@ const SignUp = () => {
                     name="password"
                     placeholder="password"
                     className="input input-bordered"
-                    required
+                        {...register("password",{required:true ,minLength: 6, maxLength: 20,pattern: /^(?=.*[A-Z])(?=.*[\W_]).{6,}$/ })}
                   />
                   <label className="label">
                     <a href="#" className="label-text-alt link link-hover">
                       Forgot password?
                     </a>
                   </label>
+                 <div>
+                 {errors.password?.type==="minLength" && <p className="text-red-500" role="alert">Password Should Atleast 6 Character</p>}
+                  {errors.password?.type==="required" && <p className="text-red-500" role="alert">Password Is required</p>}
+                  {errors.password?.type==="pattern" && <p className="text-red-500" role="alert">Password Should Contain atleast one Uppercase And One Special Character</p>}
+                 </div>
                 </div>
                 <div className="form-control">
                   <label className="label">
@@ -82,6 +106,7 @@ const SignUp = () => {
                     className="input input-bordered"
                     onBlur={handleCaptch}
                     required
+
                   />
                 </div>
                 <div className="form-control mt-6">

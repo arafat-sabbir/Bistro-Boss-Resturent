@@ -1,9 +1,10 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../../assets/Hooks/UseMenu/useAuth";
 import signInimg from "../../assets/others/authentication2.png";
 import "./SignIn.css";
 
 const SignIn = () => {
+    const navigate = useNavigate()
   const { signIn } = useAuth();
   const handleSignIn = (e) => {
     e.preventDefault();
@@ -12,7 +13,11 @@ const SignIn = () => {
     const password = form.password.value;
     console.log(email, password);
     signIn(email, password)
-      .then((res) => console.log(res.user))
+      .then((res) => 
+      {
+        console.log(res.user)
+        navigate(location.state?location.state:'/')
+    })
       .catch((error) => console.log(error));
   };
   return (
