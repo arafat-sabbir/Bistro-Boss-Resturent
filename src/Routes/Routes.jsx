@@ -7,32 +7,32 @@ import SignIn from "../Pages/SignIn/SignIn";
 import SignUp from "./SignUp/SignUp";
 
 const routes = createBrowserRouter([
-    {
-        path:'/',
-        element:<App></App>,
-        children:[
-            {
-                path:"/",
-                element:<Home></Home>
-            },
-            {
-                path:'menu',
-                element:<OurMenu></OurMenu>
-            },
-            {
-                path:'order/:category',
-                element:<Order></Order>
-            },
-            {
-                path:'/signIn',
-                element:<SignIn></SignIn>
-            },
-            {
-                path:'/signUp',
-                element:<SignUp></SignUp>
-            }
-        ]
-
-    }
-])
+  {
+    path: "/",
+    element: <App></App>,
+    children: [
+      {
+        path: "/",
+        element: <Home></Home>,
+      },
+      {
+        path: "menu",
+        element: <OurMenu></OurMenu>,
+      },
+      {
+        path: "order/:category",
+        element: <Order></Order>,
+      },
+      
+    ],
+  },
+  {
+    path: "/signIn",
+    element: <SignIn></SignIn>,
+  },
+  {
+    path: "/signUp",
+    element: <SignUp></SignUp>,
+  },
+]);
 export default routes;
