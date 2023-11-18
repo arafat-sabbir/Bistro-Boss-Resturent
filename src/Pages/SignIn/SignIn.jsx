@@ -1,10 +1,13 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../../assets/Hooks/UseMenu/useAuth";
 import signInimg from "../../assets/others/authentication2.png";
 import "./SignIn.css";
+import GoogleLogin from "../../Auth/SocialLogin/GoogleLogin/GoogleLogin";
 
 const SignIn = () => {
     const navigate = useNavigate()
+    const location = useLocation()
+    console.log(location.state);
   const { signIn } = useAuth();
   const handleSignIn = (e) => {
     e.preventDefault();
@@ -72,6 +75,10 @@ const SignIn = () => {
                 </Link>
               </p>
             </form>
+            <div className="divider"></div>
+            <div className="mx-auto">
+              <GoogleLogin></GoogleLogin>
+            </div>
           </div>
         </div>
       </div>
