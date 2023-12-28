@@ -4,6 +4,7 @@ import logo from "../../assets/logo.png";
 import useAuth from "../../assets/Hooks/UseMenu/useAuth";
 import { BsCart2 } from "react-icons/bs";
 import useCart from "../../assets/Hooks/UseCart/useCart";
+import useIsAdmin from "../../assets/Hooks/userIsAdmin/useIsAdmin";
 
 const Navbar = () => {
   const { user, logOut } = useAuth();
@@ -25,7 +26,7 @@ const Navbar = () => {
         <NavLink to={"/order/salad"}>Order Now</NavLink>
       </li>
       <li>
-        <NavLink to={"dashboard/myCart"}><BsCart2></BsCart2> My Cart <span className={user?"badge bg-main text-white border-none":''}>{user?cart?.length:""}</span>  </NavLink>
+        <NavLink to={"dashboard/"}> DashBoard</NavLink>
       </li>
     </>
   );

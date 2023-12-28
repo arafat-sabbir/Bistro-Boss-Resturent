@@ -46,7 +46,11 @@ const SignUp = () => {
           .catch((error) => console.log(error));
         console.log(data);
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        if(error.code ==="auth/email-already-in-use"){
+          toast.error("Email Already Registered",{id:toastid})
+        }
+      });
   };
   useEffect(() => {
     loadCaptchaEnginge(6);

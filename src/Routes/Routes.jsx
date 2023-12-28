@@ -8,6 +8,12 @@ import SignUp from "./SignUp/SignUp";
 import DashBoard from "../Pages/DashBoard/DashBoard";
 import Cart from "../Pages/DashBoard/Cart/Cart";
 import PrivateRoute from "./PrivateRoutes/PrivateRoute";
+import Additem from "../Pages/DashBoard/AddItem/Additem";
+import ManageItem from "../Pages/DashBoard/ManageItem/ManageItem";
+import AllUsers from "../Pages/DashBoard/AllUsers/AllUsers";
+import UserHome from "../Pages/DashBoard/UserHome/UserHome";
+import AdminHome from "../Pages/DashBoard/AdminHome/AdminHome";
+import Payment from "../Pages/DashBoard/Payment/Payment";
 
 const routes = createBrowserRouter([
   {
@@ -26,7 +32,6 @@ const routes = createBrowserRouter([
         path: "order/:category",
         element: <Order></Order>,
       },
-      
     ],
   },
   {
@@ -38,22 +43,46 @@ const routes = createBrowserRouter([
     element: <SignUp></SignUp>,
   },
   {
-    path:"dashboard",
-    element:<PrivateRoute><DashBoard></DashBoard></PrivateRoute>,
-    children:[
+    path: "dashboard",
+
+    element: (
+      <PrivateRoute>
+        <DashBoard></DashBoard>
+      </PrivateRoute>
+    ),
+    children: [
+      // user routes
       {
-        path:"myCart",
-        element:<Cart></Cart>
+        path:"userHome",
+        element:<UserHome></UserHome>
+      },
+      {
+        path: "myCart",
+        element: <PrivateRoute><Cart></Cart></PrivateRoute>,
+      },
+      {
+        path:'payment',
+        element:<Payment></Payment>
+      },
+      // admin pages
+      {
+        path:'adminHome',
+        element:<AdminHome></AdminHome>
+      },
+      {
+        path: "allUsers",
+        element: <useIsAdmin><AllUsers></AllUsers></useIsAdmin>,
+      },
+      {
+        path:'addItem',
+        element:<useAdmin><Additem></Additem></useAdmin>
+      },
+      {
+        path:"manageItem",
+        element:<useAdmin><ManageItem></ManageItem></useAdmin>
 
       }
-      // admin pages
-      ,
-      {
-        path:"allUsers",
-        
-      }
-    ]
-  }
-  
+    ],
+  },
 ]);
 export default routes;

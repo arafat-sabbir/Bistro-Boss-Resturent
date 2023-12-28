@@ -11,9 +11,10 @@ import {
   FaUsers,
   FaUtensils,
 } from "react-icons/fa";
+import useIsAdmin from "../../assets/Hooks/userIsAdmin/useIsAdmin";
 
 const DashBoard = () => {
-  const isadmin = true;
+  const {isadmin} = useIsAdmin();
   return (
     <div className="flex">
       <div className="h-screen w-64 bg-[#D1A054] fixed">
@@ -145,7 +146,7 @@ const DashBoard = () => {
           </li>
         </ul>
       </div>
-      <div className=" flex-1">
+      <div className="flex-1">
         <Outlet></Outlet>
       </div>
     </div>

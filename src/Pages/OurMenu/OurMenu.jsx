@@ -9,7 +9,7 @@ import pizzaimg from "../../assets/menu/pizza-bg.jpg";
 import saladimg from "../../assets/menu/salad-bg.jpg";
 
 const OurMenu = () => {
-  const [menu] = UseMenu();
+  const {menu} = UseMenu();
   const dessert = menu.filter((item) => item.category === "dessert");
   const salad = menu.filter((item) => item.category === "salad");
   const soup = menu.filter((item) => item.category === "soup");

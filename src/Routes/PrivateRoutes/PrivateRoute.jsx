@@ -4,6 +4,7 @@ import useAuth from "../../assets/Hooks/UseMenu/useAuth";
 const PrivateRoute = ({children}) => {
     const {user,loading} = useAuth()
     const location = useLocation()
+    console.log(user);
     if(loading){
         return <p className="h-screen justify-center items-center loading-spinner"></p>
     }

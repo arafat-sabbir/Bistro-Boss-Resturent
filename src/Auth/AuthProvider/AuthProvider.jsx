@@ -12,10 +12,12 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { app } from "../Firebase/firebase.config";
+import useAxiosPublic from "../../assets/Hooks/useAxiosPublic/useAxiosPublic";
 
 export const Context = createContext(null);
 const Authprovider = ({ children }) => {
-  const googleAuthProvider = new GoogleAuthProvider()
+  const axiosPublic = useAxiosPublic();
+  const googleAuthProvider = new GoogleAuthProvider();
   const [user, setUser] = useState("");
   const [loading, setLoading] = useState(true);
   const auth = getAuth(app);
@@ -30,19 +32,19 @@ const Authprovider = ({ children }) => {
     setLoading(true);
     return signInWithEmailAndPassword(auth, email, password);
   };
-  const googleSignIn = ()=>{
-    setLoading(true)
-    return signInWithPopup(auth,googleAuthProvider)
-  }
+  const googleSignIn = () => {
+    setLoading(true);
+    return signInWithPopup(auth, googleAuthProvider);
+  };
   // sign Out User
   const logOut = () => {
     setLoading(true);
     return signOut(auth);
   };
-  const updateUserInfo = (name,photoUrl) => {
+  const updateUserInfo = (name, photoUrl) => {
     setLoading(true);
     return updateProfile(auth.currentUser, {
-      displayName:name,
+      displayName: name,
       photoURL: photoUrl,
     });
   };
@@ -54,17 +56,30 @@ const Authprovider = ({ children }) => {
     loading,
     logOut,
     updateUserInfo,
-    googleSignIn
+    googleSignIn,
   };
   //   Get the Children from Authprovider perameter from main.jsx for access it from anywhere
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
-      console.log(currentUser.email);
-      setLoading(false);
+
+      if (currentUser) {
+        const user = { email: currentUser.email };
+        axiosPublic.post("/user/accessToken", user).then((res) => {
+          const token = res.data.token;
+          if (token) {
+            localStorage.setItem("access-token", token);
+            setLoading(false);
+          }
+        });
+      } else {
+        localStorage.removeItem("access-token");
+        setLoading(false);
+      }
     });
     return () => unsubscribe();
-  }, [auth]);
+  }, [auth, axiosPublic]);
+
   return <Context.Provider value={contextValue}>{children}</Context.Provider>;
 };
 

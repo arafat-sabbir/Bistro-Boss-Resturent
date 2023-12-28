@@ -4,6 +4,7 @@ import useCart from "../../../assets/Hooks/UseCart/useCart";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../../assets/Hooks/useAxiosSecure/useAxiosSecure";
 import toast from "react-hot-toast";
+import { Link } from "react-router-dom";
 
 const Cart = () => {
   const [cart, refetch] = useCart();
@@ -45,7 +46,11 @@ const Cart = () => {
       <div className="flex justify-between bg-gray-50 p-10 my-10 rounded-xl">
         <h3 className="text-3xl font-semibold">Total Order {cart?.length}</h3>
         <h3 className="text-3xl font-semibold">Total Price ${price}</h3>
+       {
+        cart?.length >0? <Link to={'/dashboard/payment'}>
         <button className="bg-main btn hover:bg-main text-white">Pay</button>
+        </Link>:<button disabled={true} className="bg-main btn hover:bg-main text-white">Pay</button>
+       }
       </div>
 
       <div className="overflow-x-auto">
